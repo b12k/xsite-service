@@ -41,6 +41,7 @@ createApp({
     return response.send(payload);
   })
   .listen({
+    host: '0.0.0.0',
     port: PORT
   }, () => {
     console.log(`🚀 http://127.0.0.1:${PORT}`)
