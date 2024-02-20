@@ -5,7 +5,7 @@ if (!uuid) {
 }
 const checked = localStorage.getItem('checked');
 
-window.parent.postMessage({ uuid, checked }, '*');
+window.parent.postMessage({ uuid }, '*');
 
 window.addEventListener('message', (event: MessageEvent<{ checked?: string }>) => {
   if (event.data.checked) localStorage.setItem('checked', event.data.checked);

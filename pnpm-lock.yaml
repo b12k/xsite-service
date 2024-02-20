@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@fastify/etag':
+    specifier: ^5.1.0
+    version: 5.1.0
   fastify:
     specifier: ^4.26.0
     version: 4.26.1
@@ -13,6 +16,9 @@ dependencies:
     version: 1.7.1
 
 devDependencies:
+  '@b12k/env-cmd':
+    specifier: ^10.2.0
+    version: 10.2.0
   '@swc/cli':
     specifier: ^0.3.5
     version: 0.3.9(@swc/core@1.4.2)
@@ -37,6 +43,15 @@ devDependencies:
 
 packages:
 
+  /@b12k/env-cmd@10.2.0:
+    resolution: {integrity: sha512-9VWDxHZUVCDwrgVKsocilIMCd/jv9sccVN/+cUo3xhJx59LbT1nbAPUaDXJaES84YNrJmS2gbFp75/iYjjL5NQ==}
+    engines: {node: '>=8.0.0'}
+    hasBin: true
+    dependencies:
+      commander: 5.1.0
+      cross-spawn: 7.0.3
+    dev: true
+
   /@fastify/ajv-compiler@3.5.0:
     resolution: {integrity: sha512-ebbEtlI7dxXF5ziNdr05mOY8NnDiPB1XvAlLHctRt/Rc+C3LCOVW5imUVX+mhvUhnNzmPBHewUkOFgGlCxgdAA==}
     dependencies:
@@ -47,6 +62,12 @@ packages:
 
   /@fastify/error@3.4.1:
     resolution: {integrity: sha512-wWSvph+29GR783IhmvdwWnN4bUxTD01Vm5Xad4i7i1VuAOItLvbPAb69sb0IQ2N57yprvhNIwAP5B6xfKTmjmQ==}
+    dev: false
+
+  /@fastify/etag@5.1.0:
+    resolution: {integrity: sha512-j/huE8baxgF22idzY35a579b6uP+9ykE9Jt02xY4ZApELNr2KGZmQOKTQsZS94TfKMLfPHwkoM8FfZRq8OZDXg==}
+    dependencies:
+      fastify-plugin: 4.5.1
     dev: false
 
   /@fastify/fast-json-stringify-compiler@4.3.0:
@@ -537,6 +558,11 @@ packages:
     resolution: {integrity: sha512-72fSenhMw2HZMTVHeCA9KCmpEIbzWiQsjN+BHcBbS9vr1mtt+vJjPdksIBNUmKAW8TFUDPJK5SUU3QhE9NEXDw==}
     dev: true
 
+  /commander@5.1.0:
+    resolution: {integrity: sha512-P0CysNDQ7rtVw4QIQtm+MRxV66vKFSvlsQvGYXZWR3qFU0jlMKHZZZgw8e+8DSah4UDKMqnknRDQz+xuQXQ/Zg==}
+    engines: {node: '>= 6'}
+    dev: true
+
   /commander@7.2.0:
     resolution: {integrity: sha512-QrWXB+ZQSVPmIWIhtEO9H+gwHaMGYiF5ChvoJ+K9ZGHG/sVsa6yiesAD1GC/x46sET00Xlwo1u49RVVVzvcSkw==}
     engines: {node: '>= 10'}
@@ -863,6 +889,10 @@ packages:
 
   /fast-uri@2.3.0:
     resolution: {integrity: sha512-eel5UKGn369gGEWOqBShmFJWfq/xSJvsgDzgLYC845GneayWvXBf0lJCBn5qTABfewy1ZDPoaR5OZCP+kssfuw==}
+    dev: false
+
+  /fastify-plugin@4.5.1:
+    resolution: {integrity: sha512-stRHYGeuqpEZTL1Ef0Ovr2ltazUT9g844X5z/zEBFLG8RYlpDiOCIG+ATvYEp+/zmc7sN29mcIMp8gvYplYPIQ==}
     dev: false
 
   /fastify@4.26.1:
