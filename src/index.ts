@@ -22,8 +22,6 @@ createApp({
   .get('/iframe', (request, response) => {
     let uuid = request.headers['if-none-match'];
 
-    console.log('>>>>', uuid);
-
     if (!uuid) {
       uuid = randomUUID();
     }
@@ -41,6 +39,14 @@ createApp({
     // response.header('cache-control', 'max-age=1');
 
     return response.send(payload);
+  })
+  .get('/script', (request, response) => {
+    const uuid = request.headers['if-none-match'] || randomUUID();
+
+    response.header('etag', uuid);
+    response.header('content-type', 'application/javascript');
+
+    return response.send(`if (window.resolveUuid) window.resolveUuid('${uuid}')`);
   })
   .get('/', async (request, response) => {
     const {
