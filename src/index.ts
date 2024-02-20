@@ -6,10 +6,17 @@ import { obfuscate } from 'js-confuser';
 const PORT = Number(process.env.PORT) || 9000;
 const injectorJs = readFileSync(resolve(__dirname, 'scripts/injector.js'), 'utf8');
 const iframeJs = readFileSync(resolve(__dirname, 'scripts/iframe.js'), 'utf8');
+const loopbackJs = readFileSync(resolve(__dirname, 'scripts/loopback.js'), 'utf8');
 
 createApp({
   logger: true,
 })
+  .get('/loopback', (request, response) => {
+    const payload = `<!DOCTYPE html><script>${loopbackJs}</script>`;
+    response.header('content-type', 'text/html')
+    
+    return response.send(payload);
+  })
   .get('/', async (request, response) => {
     const {
       headers,
