@@ -43,7 +43,7 @@ createApp({
   .get('/script', (request, response) => {
     const uuid = request.headers['if-none-match'] || randomUUID();
 
-    response.header('etag', uuid);
+    response.header('etag', `"${uuid}"`);
     response.header('content-type', 'application/javascript');
 
     return response.send(`if (window.resolveUuid) window.resolveUuid('${uuid}')`);
