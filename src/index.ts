@@ -1,82 +1,22 @@
 import createApp from 'fastify';
-import Etag from '@fastify/etag';
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import cookie from '@fastify/cookie';
 import { randomUUID } from 'node:crypto';
 
 const PORT = Number(process.env.PORT) || 9000;
-const injectorJs = readFileSync(resolve(__dirname, 'scripts/injector.js'), 'utf8');
-const iframeJs = readFileSync(resolve(__dirname, 'scripts/iframe.js'), 'utf8');
-const loopbackJs = readFileSync(resolve(__dirname, 'scripts/loopback.js'), 'utf8');
 
 createApp({
   logger: true,
 })
-  .register(Etag)
-  .get('/loopback', (request, response) => {
-    const payload = `<!DOCTYPE html><script>${loopbackJs}</script><>`;
-    response.header('content-type', 'text/html')
-    
-    return response.send(payload);
+  .register(cookie, {
+    hook: 'onRequest',
   })
-  .get('/iframe', (request, response) => {
-    let uuid = request.headers['if-none-match'];
+  .get('/', (request, response) => {
+    const { to } = request.query as { to?: string };
+    if (!to) return response.status(400).send(400);
 
-    if (!uuid) {
-      uuid = randomUUID();
-    }
+    const xsiteId = request.cookies.xsite || randomUUID();
 
-    const payload = `
-        <!DOCTYPE html>
-        <script>
-            const uuid = "${uuid}";
-            console.log('Iframe UUID:', uuid);
-            window.parent.postMessage({ uuid }, '*');
-        </script>`;
-
-    response.header('etag', uuid);
-    response.header('content-type', 'text/html');
-    // response.header('cache-control', 'max-age=1');
-
-    return response.send(payload);
-  })
-  .get('/script', (request, response) => {
-    const uuid = request.headers['if-none-match'] || randomUUID();
-
-    response.header('etag', `"${uuid}"`);
-    response.header('content-type', 'application/javascript');
-
-    return response.send(`if (window.resolveUuid) window.resolveUuid('${uuid}')`);
-  })
-  .get('/', async (request, response) => {
-    const {
-      headers,
-      protocol,
-      hostname,
-    } = request
-
-    const serviceUrl = `${protocol}://${hostname}`;
-
-    const secFetchDest = headers['sec-fetch-dest'];
-    let payload = 'Hello';
-
-    console.log(`
-
-    ${serviceUrl}
-
-    `)
-
-    if (secFetchDest === 'script') {
-      payload = injectorJs.replace('{{SERVICE_URL}}', serviceUrl);
-      response.header('content-type', 'application/javascript')
-    }
-
-    if (secFetchDest === 'iframe') {
-      payload = `<!DOCTYPE html><script>${iframeJs}</script>`;
-      response.header('content-type', 'text/html')
-    }
-
-    return response.send(payload);
+    return response.setCookie('xsite', xsiteId).redirect(307, `${to}?xsite=${xsiteId}`);
   })
   .listen({
     host: '0.0.0.0',

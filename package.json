@@ -4,12 +4,12 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "env-cmd run-p dev:*",
-    "dev:compile": "pnpm compile -w",
+    "dev:compile": "pnpm _build -w",
     "dev:nodemon": "nodemon",
-    "build": "run-s clean compile",
+    "build": "run-s clean _build",
     "build:docker:arm": "run-s _build:docker:arm:*",
     "clean": "shx rm -rf ./dist",
-    "compile": "swc src -d dist",
+    "_build": "swc src -d dist",
     "start": "node ./dist/src",
     "prepare": "shx cp -u .env.example .env",
     "_build:docker:base": "docker buildx build . --build-arg BUILDKIT_INLINE_CACHE=1 --push",
@@ -17,9 +17,8 @@
     "_build:docker:arm:deploy": "env-cmd -i curl -X POST {{PORTAINER_WEBHOOK}}"
   },
   "dependencies": {
-    "@fastify/etag": "^5.1.0",
-    "fastify": "^4.26.0",
-    "js-confuser": "^1.7.1"
+    "@fastify/cookie": "^9.3.1",
+    "fastify": "^4.26.0"
   },
   "devDependencies": {
     "@b12k/env-cmd": "^10.2.0",
